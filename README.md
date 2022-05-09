@@ -1,6 +1,4 @@
-# Titanic Survival Prediction <br />
-<br />
-<br />
+# Titanic Survival Prediction
 By <br />
 Vatsala Gupta B190150EC<br />
 Sameer Chettri B190063EC <br />
