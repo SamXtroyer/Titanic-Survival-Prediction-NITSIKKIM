@@ -1,8 +1,8 @@
 # Titanic Survival Prediction
-By <br />
-Vatsala Gupta B190150EC<br />
-Sameer Chettri B190063EC <br />
-Simran Dutta B190066EC
+    By <br />
+    Vatsala Gupta B190150EC<br />
+    Sameer Chettri B190063EC <br />
+    Simran Dutta B190066EC
 
 ![titanic](https://user-images.githubusercontent.com/49567327/167463795-87a3f755-e494-4683-8cb0-0caa061f6e79.jpeg)
 
