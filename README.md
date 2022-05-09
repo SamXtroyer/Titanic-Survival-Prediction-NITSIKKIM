@@ -1,3 +1,9 @@
+**Titanic Survival Prediction**
+
+
+The sinking of the Titanic is one of the most infamous shipwrecks in history. On April 15, 1912, during her maiden voyage, the widely considered “unsinkable” RMS Titanic sank after colliding with an iceberg. Unfortunately, there weren’t enough lifeboats for everyone onboard, resulting in the death of 1502 out of 2224 passengers and crew. While there was some element of luck involved in surviving, it seems some groups of people were more likely to survive than others. In this challenge, we are building a predictive model that answers the question: “what sorts of people were more likely to survive?” using passenger data (ie name, age, gender, socio-economic class, etc).
+
+
 #Importing basic libraries and loading data sets
 
 
@@ -1390,6 +1396,7 @@ data_final.head(5)
 </div>
 
 
+Next we will be splitting the test data and training data as the original.
 
 
 ```python
@@ -1443,6 +1450,7 @@ train_data.info()
     dtypes: Float64(1), Int64(1), int64(1), uint8(32)
     memory usage: 50.6 KB
 
+We will be using 'standard scaler' from sklearn library to scale the data.
 
 
 ```python
@@ -1475,12 +1483,14 @@ print(y_train)
     890    0
     Name: Survived, Length: 891, dtype: int64
 
+Next we create validation set from our training data to calculate the accuracy of the model. Validation set is a part of training data which is used as testing data to calculate accuracy.
 
 
 ```python
 from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(StandardScaler().fit_transform(x_train), y_train, test_size=0.33, random_state=42)
 ```
+First we will be using K-Nearest Neighbour(KNN) ML model on our input features and calculate its accuracy on validation set. 
 
 #Prediction using KNN
 
@@ -1545,6 +1555,8 @@ print('Classification report : \n',matrix)
        macro avg       0.77      0.76      0.76       295
     weighted avg       0.77      0.78      0.77       295
     
+
+Here we can see that the training accuracy of our model is 86% and the testing accuracy is 78%. Next we will be considering another ML model called Logistic Regression on our data to check whether it is better that KNN or not.
 
 
 #Prediction using logistic regression
@@ -1619,6 +1631,7 @@ print('Classification report : \n',matrix)
     weighted avg       0.84      0.84      0.84       295
     
 
+Now we can see that the training accuracy is 85% and the testing accuracy is 84%. We can clearly see that, logistic regression model is more accurate than KNN model on testing data. So we will be using logistic regression model to predict the survival of the passengers in test.csv
 
 
 ```python
@@ -1642,6 +1655,7 @@ test_data[["PassengerId","Survived"]].to_csv("submission1.csv", index=False)
     See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
       test_data["Survived"] = y_predict.tolist()
 
+We will store the predicted output in submission1.csv, which will have passenger id and the prediction of their survival.
 
 
 ```python
