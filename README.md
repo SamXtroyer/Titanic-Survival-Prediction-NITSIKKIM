@@ -29,7 +29,7 @@ Here we are importing basic libraries pandas, Numpy, seaborn etc..
 train_data=pd.read_csv('/content/train.csv')
 train_data.head(5)
 ```
-![train_head](https://drive.google.com/file/d/1amt8SfryzVNlqRFHB3wEAT0p_NcVZX0-/view?usp=sharing)
+![train_head](https://imgur.com/a/dgq8iBU)
 
 
 
