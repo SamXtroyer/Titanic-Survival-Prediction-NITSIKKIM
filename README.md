@@ -11,8 +11,8 @@ The sinking of the Titanic is one of the most infamous shipwrecks in history. On
 
     Content of the Code
 
-    1. Loading data
-    2. Analysing the data
+    1. Loading Data
+    2. Analysing the Data
     3. Feature Engineering
     4. KNN ML Model
     5. Logistic Regression ML Model
