@@ -1,9 +1,7 @@
-
-<!-- #region id="bWit1CuWK0Ik" -->
 #Importing basic libraries and loading data sets
-<!-- #endregion -->
 
-```python id="k9UD-upEsd85"
+
+```python
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -15,25 +13,150 @@ import math
 from matplotlib.ticker import MaxNLocator
 ```
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 206} id="ZpGmYrw-tEY-" outputId="fa310af2-7b41-4a19-e71d-e2f4598dcecb"
-train_data=pd.read_csv('/content/train.csv')
+
+```python
+train_data=pd.read_csv('/Users/sam/Documents/ML/train.csv')
 train_data.head(5)
 ```
 
-```python colab={"base_uri": "https://localhost:8080/"} id="HpIFr189wa_z" outputId="ca7a3257-6d4c-41c8-863e-359078cf3378"
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PassengerId</th>
+      <th>Survived</th>
+      <th>Pclass</th>
+      <th>Name</th>
+      <th>Sex</th>
+      <th>Age</th>
+      <th>SibSp</th>
+      <th>Parch</th>
+      <th>Ticket</th>
+      <th>Fare</th>
+      <th>Cabin</th>
+      <th>Embarked</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0</td>
+      <td>3</td>
+      <td>Braund, Mr. Owen Harris</td>
+      <td>male</td>
+      <td>22.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>A/5 21171</td>
+      <td>7.2500</td>
+      <td>NaN</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Cumings, Mrs. John Bradley (Florence Briggs Th...</td>
+      <td>female</td>
+      <td>38.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>PC 17599</td>
+      <td>71.2833</td>
+      <td>C85</td>
+      <td>C</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>1</td>
+      <td>3</td>
+      <td>Heikkinen, Miss. Laina</td>
+      <td>female</td>
+      <td>26.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>STON/O2. 3101282</td>
+      <td>7.9250</td>
+      <td>NaN</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Futrelle, Mrs. Jacques Heath (Lily May Peel)</td>
+      <td>female</td>
+      <td>35.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>113803</td>
+      <td>53.1000</td>
+      <td>C123</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>0</td>
+      <td>3</td>
+      <td>Allen, Mr. William Henry</td>
+      <td>male</td>
+      <td>35.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>373450</td>
+      <td>8.0500</td>
+      <td>NaN</td>
+      <td>S</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
 print('number of passenger in training data:'+str(len(train_data.index)))
 ```
 
-```python colab={"base_uri": "https://localhost:8080/"} id="KUKVClkUzSG2" outputId="f2df18d8-47a8-4bb3-f275-999993c33326"
-test_data=pd.read_csv('/content/test.csv')
+    number of passenger in training data:891
+
+
+
+```python
+test_data=pd.read_csv('/Users/sam/Documents/ML/test.csv')
 print('number of passenger in testing data:'+str(len(test_data.index)))
 ```
 
-<!-- #region id="aGK2teFQxa4t" -->
-#Analyzing Data 
-<!-- #endregion -->
+    number of passenger in testing data:418
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 35} id="XEQfR5kzxfcd" outputId="81327c30-d2fc-416d-a1e5-e8a2740bba08"
+
+#Analyzing Data 
+
+
+```python
 # Let pandas show all columns
 pd.options.display.width = 0
 
@@ -44,7 +167,12 @@ plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=None, h
 sns.set_theme(style = "whitegrid", palette="deep")
 ```
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 561} id="SdPErgMRBSbE" outputId="7342e91d-e096-4086-d20a-c8cf4c4c1450"
+
+    <Figure size 432x288 with 0 Axes>
+
+
+
+```python
 #merging training and testing data for missing values imputation
 len_train=len(train_data)
 data_all=pd.concat(objs=[train_data,test_data],axis=0).reset_index(drop=True)
@@ -53,13 +181,166 @@ print('number of passenger in all data:'+str(len(data_all.index)))
 data_all.head()
 ```
 
-```python colab={"base_uri": "https://localhost:8080/"} id="LX3MwZUfRaE8" outputId="5273b200-6cab-4dcb-cd55-5332253184e8"
+    <class 'pandas.core.frame.DataFrame'>
+    RangeIndex: 1309 entries, 0 to 1308
+    Data columns (total 12 columns):
+     #   Column       Non-Null Count  Dtype  
+    ---  ------       --------------  -----  
+     0   PassengerId  1309 non-null   int64  
+     1   Survived     891 non-null    float64
+     2   Pclass       1309 non-null   int64  
+     3   Name         1309 non-null   object 
+     4   Sex          1309 non-null   object 
+     5   Age          1046 non-null   float64
+     6   SibSp        1309 non-null   int64  
+     7   Parch        1309 non-null   int64  
+     8   Ticket       1309 non-null   object 
+     9   Fare         1308 non-null   float64
+     10  Cabin        295 non-null    object 
+     11  Embarked     1307 non-null   object 
+    dtypes: float64(3), int64(4), object(5)
+    memory usage: 122.8+ KB
+    number of passenger in all data:1309
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PassengerId</th>
+      <th>Survived</th>
+      <th>Pclass</th>
+      <th>Name</th>
+      <th>Sex</th>
+      <th>Age</th>
+      <th>SibSp</th>
+      <th>Parch</th>
+      <th>Ticket</th>
+      <th>Fare</th>
+      <th>Cabin</th>
+      <th>Embarked</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0.0</td>
+      <td>3</td>
+      <td>Braund, Mr. Owen Harris</td>
+      <td>male</td>
+      <td>22.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>A/5 21171</td>
+      <td>7.2500</td>
+      <td>NaN</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>1.0</td>
+      <td>1</td>
+      <td>Cumings, Mrs. John Bradley (Florence Briggs Th...</td>
+      <td>female</td>
+      <td>38.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>PC 17599</td>
+      <td>71.2833</td>
+      <td>C85</td>
+      <td>C</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>1.0</td>
+      <td>3</td>
+      <td>Heikkinen, Miss. Laina</td>
+      <td>female</td>
+      <td>26.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>STON/O2. 3101282</td>
+      <td>7.9250</td>
+      <td>NaN</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>1.0</td>
+      <td>1</td>
+      <td>Futrelle, Mrs. Jacques Heath (Lily May Peel)</td>
+      <td>female</td>
+      <td>35.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>113803</td>
+      <td>53.1000</td>
+      <td>C123</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>0.0</td>
+      <td>3</td>
+      <td>Allen, Mr. William Henry</td>
+      <td>male</td>
+      <td>35.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>373450</td>
+      <td>8.0500</td>
+      <td>NaN</td>
+      <td>S</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
 #check missing data
 null_data=data_all.isnull().sum()
 null_data[null_data>0]
 ```
 
-```python colab={"base_uri": "https://localhost:8080/"} id="2wb3CPqnO8Uu" outputId="39e915cc-6c2b-49b4-99ae-8fae1bc006b3"
+
+
+
+    Survived     418
+    Age          263
+    Fare           1
+    Cabin       1014
+    Embarked       2
+    dtype: int64
+
+
+
+
+```python
 #Converting some columns to categories and category labels to discrete numbers
 data_all["Cabin_Group"] = data_all["Cabin"].str[:1]
 data_all["Cabin_Group"] = data_all["Cabin_Group"].astype('category')
@@ -82,7 +363,30 @@ data_all = data_all.convert_dtypes()
 data_all.info()
 ```
 
-```python colab={"base_uri": "https://localhost:8080/"} id="Yh9jIKZFUK8Z" outputId="f0b0a841-d72f-49ce-fa86-d25aa547e8be"
+    <class 'pandas.core.frame.DataFrame'>
+    RangeIndex: 1309 entries, 0 to 1308
+    Data columns (total 13 columns):
+     #   Column       Non-Null Count  Dtype  
+    ---  ------       --------------  -----  
+     0   PassengerId  1309 non-null   Int64  
+     1   Survived     891 non-null    Int64  
+     2   Pclass       1309 non-null   Int64  
+     3   Name         1309 non-null   string 
+     4   Sex          1309 non-null   Int64  
+     5   Age          1046 non-null   Float64
+     6   SibSp        1309 non-null   Int64  
+     7   Parch        1309 non-null   Int64  
+     8   Ticket       1309 non-null   string 
+     9   Fare         1308 non-null   Float64
+     10  Cabin        295 non-null    string 
+     11  Embarked     1309 non-null   Int64  
+     12  Cabin_Group  1309 non-null   Int64  
+    dtypes: Float64(2), Int64(8), string(3)
+    memory usage: 145.9 KB
+
+
+
+```python
 print('\nEmbarked:')
 print(embarked_categories)
 print('\nCabin Group:')
@@ -91,11 +395,21 @@ print('\nSex:')
 print(sex_categories)
 ```
 
-<!-- #region id="yUttTxSTSydZ" -->
-PLOTS and imputing missing data
-<!-- #endregion -->
+    
+    Embarked:
+    {0: 'C', 1: 'Q', 2: 'S'}
+    
+    Cabin Group:
+    {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'T'}
+    
+    Sex:
+    {0: 'female', 1: 'male'}
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 883} id="twyp4M09M0c5" outputId="49a09ba8-c5c7-426e-945e-620c5a55e4fe"
+
+PLOTS and imputing missing data
+
+
+```python
 #fare
 fig,axes = plt.subplots(nrows=3, ncols=3, figsize=(15,15))
 
@@ -117,18 +431,86 @@ sns.scatterplot(ax=axes[2,2], data=data_all, x="Fare", y="Embarked")
 plt.show()
 ```
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 81} id="o_OvZZN6F9Jv" outputId="5fe11111-ceec-44c9-a17d-db8cda273bb5"
+
+    
+![png](pls_files/pls_12_0.png)
+    
+
+
+
+```python
 #checking the one missing fare data
 data_all[data_all["Fare"].isnull()]
 ```
 
-```python id="COQmaG4-JXy9"
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PassengerId</th>
+      <th>Survived</th>
+      <th>Pclass</th>
+      <th>Name</th>
+      <th>Sex</th>
+      <th>Age</th>
+      <th>SibSp</th>
+      <th>Parch</th>
+      <th>Ticket</th>
+      <th>Fare</th>
+      <th>Cabin</th>
+      <th>Embarked</th>
+      <th>Cabin_Group</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1043</th>
+      <td>1044</td>
+      <td>&lt;NA&gt;</td>
+      <td>3</td>
+      <td>Storey, Mr. Thomas</td>
+      <td>1</td>
+      <td>60.5</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3701</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>2</td>
+      <td>-1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
 #filling the one missing fare data
 m = data_all[data_all["Pclass"]==3]["Fare"].median()
 data_all["Fare"] = data_all["Fare"].fillna(m)
 ```
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 883} id="oaDK-SB9Jly_" outputId="f1fd9ee4-d680-4f7c-e25a-fe5852945f6f"
+
+```python
 #embarked 
 fig,axes = plt.subplots(nrows=3, ncols=3, figsize=(15,15))
 
@@ -151,12 +533,93 @@ sns.boxplot(ax=axes[2,2], data=data_all, x="Embarked",y="Cabin_Group")
 plt.show()
 ```
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 112} id="aMteOzChXytZ" outputId="5822d07b-7e2e-4ba6-da46-0eb0d8dc8a81"
+
+    
+![png](pls_files/pls_15_0.png)
+    
+
+
+
+```python
 #checking missing embarked values
 data_all[data_all["Embarked"]==-1]
 ```
 
-<!-- #region id="SjmTTStETarr" -->
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PassengerId</th>
+      <th>Survived</th>
+      <th>Pclass</th>
+      <th>Name</th>
+      <th>Sex</th>
+      <th>Age</th>
+      <th>SibSp</th>
+      <th>Parch</th>
+      <th>Ticket</th>
+      <th>Fare</th>
+      <th>Cabin</th>
+      <th>Embarked</th>
+      <th>Cabin_Group</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>61</th>
+      <td>62</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Icard, Miss. Amelie</td>
+      <td>0</td>
+      <td>38.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>113572</td>
+      <td>80.0</td>
+      <td>B28</td>
+      <td>-1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>829</th>
+      <td>830</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Stone, Mrs. George Nelson (Martha Evelyn)</td>
+      <td>0</td>
+      <td>62.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>113572</td>
+      <td>80.0</td>
+      <td>B28</td>
+      <td>-1</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 
 Fare column shows us Embarked is "C" and and Pclass column confirms it Also we see that Cabin Names start with B belongs to port 0 (= C) We can fill missing Embarked value with "0"
 
@@ -171,14 +634,15 @@ The embarkation point 0(=C) mostly consists of families with children. In every 
 The people at embarkation point 0(=C) pays more for tickets.
 
 Cabin_Group 0(=A) and 1(=B) mostly uses embarkation point 0(=C)
-<!-- #endregion -->
 
-```python id="pu0qBkKFTAco"
+
+```python
 #imputing missing embarked values
 data_all["Embarked"] = data_all["Embarked"].replace(-1,0)
 ```
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 883} id="VNYxrmpxYCtT" outputId="ca619349-25aa-47d1-dfa6-ae03ce05b233"
+
+```python
 #cabin group
 fig,axes = plt.subplots(nrows=3, ncols=3,figsize=(15,15))
 
@@ -200,7 +664,12 @@ sns.boxplot(ax=axes[2,2], data=data_all, x="Cabin_Group", y="Embarked")
 plt.show()
 ```
 
-<!-- #region id="wPq5EKS8YjzQ" -->
+
+    
+![png](pls_files/pls_19_0.png)
+    
+
+
 A high amount of Cabin_Group data is missing.
 
 Except missing data: Cabin_Group 1(=B), 3(=D), 4(=E) was mostly survived and Cabin_Group 7(=T) did not survive.
@@ -218,9 +687,9 @@ Except Cabin_Group 0(=A) and 7(=T), SibSp is not descriptive for Cabin_Group. It
 People at Cabin_Group 2(=C) pays more for tickets.
 
 Missing Cabin_Group data majors on embarkation point 2(=S)
-<!-- #endregion -->
 
-```python colab={"base_uri": "https://localhost:8080/"} id="4W_1TSTeYWGw" outputId="ad833b84-45ef-4aef-a4c0-462d2905b1c3"
+
+```python
 #imputing missing values in cabin group
 missing_survived = len(data_all[(data_all['Cabin_Group']==-1) &(data_all["Survived"]==1)])
 missing_not_survived = len(data_all[(data_all['Cabin_Group']==-1) &(data_all["Survived"]==0)])
@@ -231,15 +700,19 @@ print("Survived Percentage in Missing Cabin Values : ", '{:.0%}'.format(missing_
 print("Not-Survived Percentage in Missing Cabin Values : ", '{:.0%}'.format(missing_not_survived/ cabin_null_count))
 ```
 
-<!-- #region id="V6NR2VU-J1ks" -->
-Since cabin_group gives good survival prediction so we will keep cabin_group and drop cabin
-<!-- #endregion -->
+    Survived Percentage in Missing Cabin Values :  20%
+    Not-Survived Percentage in Missing Cabin Values :  47%
 
-```python id="7qy2eE-FJjBJ"
+
+Since cabin_group gives good survival prediction so we will keep cabin_group and drop cabin
+
+
+```python
 data_all = data_all.drop(['Cabin'], axis=1)
 ```
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 883} id="CLYaBhglM86R" outputId="1049fb98-4837-4426-f295-6e506bab90a6"
+
+```python
 #age
 fig,axes = plt.subplots(nrows=3, ncols=3, figsize=(15,15))
 
@@ -256,11 +729,16 @@ fig.delaxes(axes[2,2])
 plt.show()
 ```
 
-<!-- #region id="416gAtsKR-hP" -->
-In the light of the above inspection we will use Pclass, SibSp, Parch, Cabin_Group, Survived and Embarked features to impute Age feature using decision tree.
-<!-- #endregion -->
 
-```python id="3LPNVyPZR0eK"
+    
+![png](pls_files/pls_24_0.png)
+    
+
+
+In the light of the above inspection we will use Pclass, SibSp, Parch, Cabin_Group, Survived and Embarked features to impute Age feature using decision tree.
+
+
+```python
 #imputing missing age
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.experimental import enable_iterative_imputer
@@ -277,7 +755,8 @@ data_impute_dtree["MF_Age"] = x_imputed[:,2]
 data_impute_dtree["MF_Age"] = data_impute_dtree["MF_Age"].astype(int)
 ```
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 883} id="9fjWuONBKPMS" outputId="66e40361-380d-4a05-d135-5d26f3453828"
+
+```python
 #Pclass
 fig,axes = plt.subplots(nrows=3, ncols=3, figsize=(15,15))
 
@@ -299,7 +778,12 @@ sns.boxplot(ax=axes[2,2], data=data_all, x="Pclass", y="Embarked")
 plt.show()
 ```
 
-<!-- #region id="oFbDcdycLONL" -->
+
+    
+![png](pls_files/pls_27_0.png)
+    
+
+
 Pclass 3 mostly not survived.
 
 Pclass 1 consists of older people. Younger people is at Pclass 3.
@@ -307,9 +791,9 @@ Pclass 1 consists of older people. Younger people is at Pclass 3.
 Families are mostly at Pclass 2.
 
 Pclass 1 pays more for tickets.
-<!-- #endregion -->
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 883} id="s_Zf4CYWLKjc" outputId="26f94042-f369-441f-af6b-26aa30fca54a"
+
+```python
 #sex vs others
 fig,axes = plt.subplots(nrows=3, ncols=3, figsize=(15,15))
 
@@ -332,7 +816,12 @@ plt.show()
 
 ```
 
-<!-- #region id="adxeoCQ8Lz2C" -->
+
+    
+![png](pls_files/pls_29_0.png)
+    
+
+
 The number of men is (about) twice the number of women.
 
 The female mostly survived.
@@ -346,9 +835,9 @@ Mostly females have Sibling/Spouse/Children.
 Females pay more for tickets.
 
 Females mostly embarked at 1(=2) and 2(=S)
-<!-- #endregion -->
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 883} id="5SVukKiJLxI4" outputId="07a71292-7116-4017-84df-f37294255fd0"
+
+```python
 #SibSp(siblings or spouse on board)
 fig,axes = plt.subplots(nrows=3, ncols=3, figsize=(15,15))
 
@@ -371,7 +860,12 @@ sns.boxplot(ax=axes[2,2], data=data_all, x="SibSp", y="Embarked")
 plt.show()
 ```
 
-<!-- #region id="VVwlvsADL_Hx" -->
+
+    
+![png](pls_files/pls_31_0.png)
+    
+
+
 Most people have no sibling/spouse. If they have it is probably one.
 
 More than 2 SibSp dramatically decreases survival possibility.
@@ -379,9 +873,9 @@ More than 2 SibSp dramatically decreases survival possibility.
 There are more survivors at PClass 1 (Middle aged, embarked at 1(=Q))
 
 More than 2 sibling/spouse means you are young (The more siblings the less age.)
-<!-- #endregion -->
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 883} id="PzhK54tGL71w" outputId="39f0ab45-335e-463c-8b66-9f2f6cbc0d27"
+
+```python
 #Parch(parents or children on board)
 fig,axes = plt.subplots(nrows=3, ncols=3, figsize=(15,15))
 
@@ -404,11 +898,16 @@ sns.boxplot(ax=axes[2,2], data=data_all, x="Parch", y="Embarked")
 plt.show()
 ```
 
-<!-- #region id="J-ccsJjTMSBJ" -->
-Parch has some relation with Age. It has certain characteristics. More Parent/Children means paying more to tickets.
-<!-- #endregion -->
 
-```python id="up79tfP5U1Ox"
+    
+![png](pls_files/pls_33_0.png)
+    
+
+
+Parch has some relation with Age. It has certain characteristics. More Parent/Children means paying more to tickets.
+
+
+```python
 data_final = data_impute_dtree.copy()
 data_final["Age"] = data_final["MF_Age"]
 data_final = data_final.drop("MF_Age", axis=1)
@@ -417,15 +916,12 @@ data_final["Sex"] = data_all["Sex"]
 data_final["Fare"] = data_all["Fare"]
 ```
 
-<!-- #region id="Y70uPkc4Ul_o" -->
 #Feature Engineering
-<!-- #endregion -->
 
-<!-- #region id="uFzDgB3HVdDO" -->
 Pclass:
-<!-- #endregion -->
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 340} id="F98QA4v7MX7e" outputId="4ea0e9a8-5f92-4ca5-df99-9075c216a155"
+
+```python
 #Pclass
 fig,axes = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
 axes[1].yaxis.set_major_locator(MaxNLocator(integer=True))
@@ -439,23 +935,40 @@ sns.boxplot(ax=axes[1], data=data_final, x="Pclass", y="Survived")
 plt.show()
 ```
 
-<!-- #region id="tknkRBcGU_oc" -->
+
+    
+![png](pls_files/pls_38_0.png)
+    
+
+
 Pclass is a good feature to predict survival.
-<!-- #endregion -->
 
-<!-- #region id="8SCaD_vtVum2" -->
 Name:
-<!-- #endregion -->
 
-```python colab={"base_uri": "https://localhost:8080/"} id="ctfAFVsQVyh7" outputId="6bf21494-c197-4ef6-89db-629d083c3d51"
+
+```python
 data_final["Name"].head()
 ```
 
-```python id="yyzWFsc9WBOH"
+
+
+
+    0                              Braund, Mr. Owen Harris
+    1    Cumings, Mrs. John Bradley (Florence Briggs Th...
+    2                               Heikkinen, Miss. Laina
+    3         Futrelle, Mrs. Jacques Heath (Lily May Peel)
+    4                             Allen, Mr. William Henry
+    Name: Name, dtype: string
+
+
+
+
+```python
 data_final["Title"] = [i.split(".")[0].split(",")[-1].strip() for i in data_final["Name"]]
 ```
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 397} id="EXnBWrQfWEgY" outputId="f648cf0b-1b28-4857-e623-6f10ad56d309"
+
+```python
 #plotting titles in the name
 fig,axes = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
 axes[1].yaxis.set_major_locator(MaxNLocator(integer=True))
@@ -469,11 +982,28 @@ sns.boxplot(ax=axes[1], data=data_final, x="Title", y="Survived")
 plt.show()
 ```
 
-```python colab={"base_uri": "https://localhost:8080/"} id="40M5H7E3WRC_" outputId="29ccce93-6396-42c8-8a1b-f46439b01270"
+
+    
+![png](pls_files/pls_43_0.png)
+    
+
+
+
+```python
 data_final["Title"].unique()
 ```
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 387} id="u4uQj4UAWca-" outputId="22b8dd68-d730-4c6b-f1f5-cd7ded7c62aa"
+
+
+
+    array(['Mr', 'Mrs', 'Miss', 'Master', 'Don', 'Rev', 'Dr', 'Mme', 'Ms',
+           'Major', 'Lady', 'Sir', 'Mlle', 'Col', 'Capt', 'the Countess',
+           'Jonkheer', 'Dona'], dtype=object)
+
+
+
+
+```python
 data_final["Title"] = data_final["Title"].replace(["Capt", "Col", "Don", "Dr", "Major", "Rev", "Sir", "Jonkheer"], "Rare_Male")
 data_final["Title"] = data_final["Title"].replace(["Lady", "the Countess", "Dona", "Mme", "Ms", "Mlle"], "Rare_Female")
 
@@ -489,11 +1019,16 @@ sns.boxplot(ax=axes[1], data=data_final, x="Title", y="Survived")
 plt.show()
 ```
 
-<!-- #region id="643rQ7lHWx6D" -->
-The title in the name gives good prediction of survival so we can use it.
-<!-- #endregion -->
 
-```python colab={"base_uri": "https://localhost:8080/"} id="SgY0G03FWrEG" outputId="3727a404-381a-4bd1-fbae-be512aa3c226"
+    
+![png](pls_files/pls_45_0.png)
+    
+
+
+The title in the name gives good prediction of survival so we can use it.
+
+
+```python
 #converting titles to categories and discrete values
 data_final["Title"] = data_final["Title"].astype('category')
 title_categories = dict(enumerate(data_final["Title"].cat.categories))
@@ -506,11 +1041,17 @@ data_final["Embarked"] = data_final["Embarked"].astype('category')
 title_categories
 ```
 
-<!-- #region id="I1z8YIkPXL8g" -->
-Sex:
-<!-- #endregion -->
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 341} id="Zvrpij6CXKQC" outputId="bf998feb-bf35-4723-fcf4-7a44d74978f0"
+
+
+    {0: 'Master', 1: 'Miss', 2: 'Mr', 3: 'Mrs', 4: 'Rare_Female', 5: 'Rare_Male'}
+
+
+
+Sex:
+
+
+```python
 fig,axes = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
 axes[1].yaxis.set_major_locator(MaxNLocator(integer=True))
 
@@ -523,15 +1064,18 @@ sns.boxplot(ax=axes[1], data=data_final, x="Sex", y="Survived")
 plt.show()
 ```
 
-<!-- #region id="WQLbahXfXSZk" -->
+
+    
+![png](pls_files/pls_49_0.png)
+    
+
+
 Sex of the people is a good feature to predict survival.
-<!-- #endregion -->
 
-<!-- #region id="sYDKUr5NXZJP" -->
 Age:
-<!-- #endregion -->
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 729} id="vnkZF077XSFO" outputId="204d7d0e-92cb-42fe-efad-70e925eb6c7e"
+
+```python
 fig,axes = plt.subplots(nrows=1, ncols=2, figsize=(30,15))
 axes[1].yaxis.set_major_locator(MaxNLocator(integer=True))
 
@@ -544,15 +1088,18 @@ sns.scatterplot(ax=axes[1], data=data_final, x="Age", y="Survived",s=70)
 plt.show()
 ```
 
-<!-- #region id="FgtUXamoXdo4" -->
+
+    
+![png](pls_files/pls_52_0.png)
+    
+
+
 Age can be used to predict survival.
-<!-- #endregion -->
 
-<!-- #region id="SbjMt6g76Ts2" -->
 Parch+SibSp=Fmly_count:
-<!-- #endregion -->
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 346} id="62l3uJCbXQkF" outputId="71057c94-eeec-4305-aa74-f2219712f2a3"
+
+```python
 data_final["Fmly_Count"] = data_final["SibSp"] + data_final["Parch"] + 1
 
 fig,axes = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
@@ -567,15 +1114,18 @@ sns.boxplot(ax=axes[1], data=data_final, x="Fmly_Count", y="Survived")
 plt.show()
 ```
 
-<!-- #region id="i1S6H-p97ikt" -->
+
+    
+![png](pls_files/pls_55_0.png)
+    
+
+
 Fmly_count can be used to predict survival.
-<!-- #endregion -->
 
-<!-- #region id="tcRhYAZM7pWD" -->
 Fare:
-<!-- #endregion -->
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 351} id="9qy4s3497Pjv" outputId="2bf7a3fc-6b02-469d-d4e0-b7a77d94ad96"
+
+```python
 fig,axes = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
 axes[1].yaxis.set_major_locator(MaxNLocator(integer=True))
 
@@ -588,15 +1138,18 @@ sns.scatterplot(ax=axes[1], data=data_final,x ="Fare",y="Survived")
 plt.show()
 ```
 
-<!-- #region id="GVFff99u8VnM" -->
+
+    
+![png](pls_files/pls_58_0.png)
+    
+
+
 Fare can be used to predict
-<!-- #endregion -->
 
-<!-- #region id="INx67yQ38cYO" -->
 Cabin_group:
-<!-- #endregion -->
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 344} id="3UYWRQiN7tI2" outputId="9e3191a0-760f-4bab-ce77-7cacd67560c6"
+
+```python
 fig,axes = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
 axes[1].yaxis.set_major_locator(MaxNLocator(integer=True))
 
@@ -609,15 +1162,18 @@ sns.boxplot(ax=axes[1], data=data_final, x="Cabin_Group", y="Survived")
 plt.show()
 ```
 
-<!-- #region id="15eNV_Mt8mVv" -->
+
+    
+![png](pls_files/pls_61_0.png)
+    
+
+
 Cabin_group can be used for prediction
-<!-- #endregion -->
 
-<!-- #region id="4zbM_hVp8s3Z" -->
 Embarked:
-<!-- #endregion -->
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 341} id="1ZDHEM-v8jgA" outputId="abf8584a-f848-42a6-fef7-d00cf176f486"
+
+```python
 fig,axes = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
 axes[1].yaxis.set_major_locator(MaxNLocator(integer=True))
 
@@ -630,31 +1186,209 @@ sns.boxplot(ax=axes[1], data=data_final, x="Embarked", y="Survived")
 plt.show()
 ```
 
-<!-- #region id="Ix_omE6_82UT" -->
-Embarked doesn't gives us some meaningful insight to predict
-<!-- #endregion -->
 
-<!-- #region id="RsggMciYMiAa" -->
+    
+![png](pls_files/pls_64_0.png)
+    
+
+
+Embarked doesn't gives us some meaningful insight to predict
+
 #Training and testing data
 
 
-<!-- #endregion -->
 
-```python id="YHWJm0OT8wiL"
+
+```python
 #get dummies
 data_final = pd.get_dummies(data_final, columns=["Pclass", "Title", "Sex", "Fmly_Count", "Cabin_Group", "Embarked"])
 ```
 
-```python id="nhKlQ-Ux_oj6"
+
+```python
 #dropping unnecessary
 data_final.drop(labels=['SibSp','Parch'],axis=1,inplace=True)
 ```
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 299} id="boWOXAoyAjYi" outputId="3d8db224-2c14-4231-a7ad-df4241316fd6"
+
+```python
 data_final.head(5)
 ```
 
-```python colab={"base_uri": "https://localhost:8080/"} id="_eZnVWWx9u9o" outputId="79e787c2-5155-4ea3-ea16-4f4bc5941373"
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Survived</th>
+      <th>Age</th>
+      <th>Fare</th>
+      <th>Pclass_1</th>
+      <th>Pclass_2</th>
+      <th>Pclass_3</th>
+      <th>Title_0</th>
+      <th>Title_1</th>
+      <th>Title_2</th>
+      <th>Title_3</th>
+      <th>...</th>
+      <th>Cabin_Group_1</th>
+      <th>Cabin_Group_2</th>
+      <th>Cabin_Group_3</th>
+      <th>Cabin_Group_4</th>
+      <th>Cabin_Group_5</th>
+      <th>Cabin_Group_6</th>
+      <th>Cabin_Group_7</th>
+      <th>Embarked_0</th>
+      <th>Embarked_1</th>
+      <th>Embarked_2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>22</td>
+      <td>7.25</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>38</td>
+      <td>71.2833</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>26</td>
+      <td>7.925</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>35</td>
+      <td>53.1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>35</td>
+      <td>8.05</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 35 columns</p>
+</div>
+
+
+
+
+```python
 #splitting of testing and training data
 train_data = data_final[:len_train]
 test_data = data_final[len_train:]
@@ -662,7 +1396,52 @@ test_data = data_final[len_train:]
 train_data.info()
 ```
 
-```python id="kE5ojHk8_a9t"
+    <class 'pandas.core.frame.DataFrame'>
+    RangeIndex: 891 entries, 0 to 890
+    Data columns (total 35 columns):
+     #   Column          Non-Null Count  Dtype  
+    ---  ------          --------------  -----  
+     0   Survived        891 non-null    Int64  
+     1   Age             891 non-null    int64  
+     2   Fare            891 non-null    Float64
+     3   Pclass_1        891 non-null    uint8  
+     4   Pclass_2        891 non-null    uint8  
+     5   Pclass_3        891 non-null    uint8  
+     6   Title_0         891 non-null    uint8  
+     7   Title_1         891 non-null    uint8  
+     8   Title_2         891 non-null    uint8  
+     9   Title_3         891 non-null    uint8  
+     10  Title_4         891 non-null    uint8  
+     11  Title_5         891 non-null    uint8  
+     12  Sex_0           891 non-null    uint8  
+     13  Sex_1           891 non-null    uint8  
+     14  Fmly_Count_1    891 non-null    uint8  
+     15  Fmly_Count_2    891 non-null    uint8  
+     16  Fmly_Count_3    891 non-null    uint8  
+     17  Fmly_Count_4    891 non-null    uint8  
+     18  Fmly_Count_5    891 non-null    uint8  
+     19  Fmly_Count_6    891 non-null    uint8  
+     20  Fmly_Count_7    891 non-null    uint8  
+     21  Fmly_Count_8    891 non-null    uint8  
+     22  Fmly_Count_11   891 non-null    uint8  
+     23  Cabin_Group_-1  891 non-null    uint8  
+     24  Cabin_Group_0   891 non-null    uint8  
+     25  Cabin_Group_1   891 non-null    uint8  
+     26  Cabin_Group_2   891 non-null    uint8  
+     27  Cabin_Group_3   891 non-null    uint8  
+     28  Cabin_Group_4   891 non-null    uint8  
+     29  Cabin_Group_5   891 non-null    uint8  
+     30  Cabin_Group_6   891 non-null    uint8  
+     31  Cabin_Group_7   891 non-null    uint8  
+     32  Embarked_0      891 non-null    uint8  
+     33  Embarked_1      891 non-null    uint8  
+     34  Embarked_2      891 non-null    uint8  
+    dtypes: Float64(1), Int64(1), int64(1), uint8(32)
+    memory usage: 50.6 KB
+
+
+
+```python
 x_train=train_data.drop('Survived',axis=1)
 from sklearn.preprocessing import StandardScaler
 x_train = StandardScaler().fit_transform(x_train)
@@ -674,20 +1453,35 @@ y_train = y_train.astype('int')
 
 ```
 
-```python colab={"base_uri": "https://localhost:8080/"} id="g72w96GlBVvj" outputId="aca6bafe-31a7-4041-fba4-59476bcfe532"
+
+```python
 print(y_train)
 ```
 
-```python id="oMLPxcCUBTBS"
+    0      0
+    1      1
+    2      1
+    3      1
+    4      0
+          ..
+    886    0
+    887    1
+    888    0
+    889    1
+    890    0
+    Name: Survived, Length: 891, dtype: int64
+
+
+
+```python
 from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(StandardScaler().fit_transform(x_train), y_train, test_size=0.33, random_state=42)
 ```
 
-<!-- #region id="Dicvq5Yr_JFn" -->
 #Prediction using KNN
-<!-- #endregion -->
 
-```python colab={"base_uri": "https://localhost:8080/"} id="eWyzIB0wacKF" outputId="320ead9b-4947-4d13-c726-556733dd1c71"
+
+```python
 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report
@@ -719,11 +1513,40 @@ print('Classification report : \n',matrix)
 
 ```
 
-<!-- #region id="yQg0KzL4xAiE" -->
-#Prediction using logistic regression
-<!-- #endregion -->
+    [[350  24]
+     [ 57 165]]
+    Outcome values : 
+     350 24 57 165
+    Classification report : 
+                   precision    recall  f1-score   support
+    
+               1       0.87      0.74      0.80       222
+               0       0.86      0.94      0.90       374
+    
+        accuracy                           0.86       596
+       macro avg       0.87      0.84      0.85       596
+    weighted avg       0.86      0.86      0.86       596
+    
+    [[148  27]
+     [ 39  81]]
+    Outcome values : 
+     148 27 39 81
+    Classification report : 
+                   precision    recall  f1-score   support
+    
+               1       0.75      0.68      0.71       120
+               0       0.79      0.85      0.82       175
+    
+        accuracy                           0.78       295
+       macro avg       0.77      0.76      0.76       295
+    weighted avg       0.77      0.78      0.77       295
+    
 
-```python colab={"base_uri": "https://localhost:8080/"} id="yon0itNdGHBm" outputId="7646aa2a-3d32-46c9-d6ca-e0ef57bb02c2"
+
+#Prediction using logistic regression
+
+
+```python
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
@@ -761,7 +1584,40 @@ print('Classification report : \n',matrix)
 
 ```
 
-```python colab={"base_uri": "https://localhost:8080/"} id="mU3A5rMmJlTZ" outputId="505840b1-0947-4090-ed4f-c5a6aa05c7f0"
+    Training Accuracy: % 85.23
+    Testing Accuracy: % 83.73
+    [[335  39]
+     [ 49 173]]
+    Outcome values : 
+     335 39 49 173
+    Classification report : 
+                   precision    recall  f1-score   support
+    
+               1       0.82      0.78      0.80       222
+               0       0.87      0.90      0.88       374
+    
+        accuracy                           0.85       596
+       macro avg       0.84      0.84      0.84       596
+    weighted avg       0.85      0.85      0.85       596
+    
+    [[154  21]
+     [ 27  93]]
+    Outcome values : 
+     154 21 27 93
+    Classification report : 
+                   precision    recall  f1-score   support
+    
+               1       0.82      0.78      0.79       120
+               0       0.85      0.88      0.87       175
+    
+        accuracy                           0.84       295
+       macro avg       0.83      0.83      0.83       295
+    weighted avg       0.84      0.84      0.84       295
+    
+
+
+
+```python
 #prediction by sklearn
 x_test1 = test_data.drop("Survived", axis=1)
 x_test1 = StandardScaler().fit_transform(x_test1)
@@ -769,13 +1625,110 @@ x_test1 = StandardScaler().fit_transform(x_test1)
 y_predict=logreg.predict(x_test1)
 test_data["Survived"] = y_predict.tolist()
 
-test_data = pd.read_csv('/content/test.csv')
+test_data = pd.read_csv('/Users/sam/Documents/ML/test.csv')
 test_data.set_index("PassengerId")
 test_data["Survived"] = y_predict.tolist()
 test_data[["PassengerId","Survived"]].to_csv("submission1.csv", index=False)
 ```
 
-```python colab={"base_uri": "https://localhost:8080/", "height": 655} id="guySqTmYMT3d" outputId="ffac2c5f-6a67-4827-993a-f9cb5ef508c9"
-df=pd.read_csv("/content/submission1.csv")
+    /var/folders/l2/tq_sfhyj76988knrq9ghdflm0000gn/T/ipykernel_2504/2294351978.py:6: SettingWithCopyWarning: 
+    A value is trying to be set on a copy of a slice from a DataFrame.
+    Try using .loc[row_indexer,col_indexer] = value instead
+    
+    See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+      test_data["Survived"] = y_predict.tolist()
+
+
+
+```python
+df=pd.read_csv("/Users/sam/Documents/ML/submission1.csv")
 df.head(100)
 ```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PassengerId</th>
+      <th>Survived</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>892</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>893</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>894</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>895</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>896</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>95</th>
+      <td>987</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>96</th>
+      <td>988</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>989</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>990</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>991</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>100 rows × 2 columns</p>
+</div>
+
+
