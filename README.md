@@ -12,7 +12,7 @@ import math
 # To manage ticker in plot
 from matplotlib.ticker import MaxNLocator
 ```
-
+Here we are importing important libraries like pandas to create dataframe, numpy for execution of mathematical functions on array, and seaborn & matplotlib for plotting data.
 
 ```python
 train_data=pd.read_csv('/Users/sam/Documents/ML/train.csv')
@@ -136,6 +136,7 @@ train_data.head(5)
 
 
 
+Here we are loading the datfiles.
 
 ```python
 print('number of passenger in training data:'+str(len(train_data.index)))
@@ -171,6 +172,7 @@ sns.set_theme(style = "whitegrid", palette="deep")
     <Figure size 432x288 with 0 Axes>
 
 
+Now we will merge both testing and training data to analyze the correlation between the features.
 
 ```python
 #merging training and testing data for missing values imputation
@@ -319,6 +321,7 @@ data_all.head()
 </div>
 
 
+We will check the missing data of the features so that we can use those features to predict.
 
 
 ```python
@@ -338,6 +341,7 @@ null_data[null_data>0]
     dtype: int64
 
 
+We will be converting some features into categorical data.
 
 
 ```python
