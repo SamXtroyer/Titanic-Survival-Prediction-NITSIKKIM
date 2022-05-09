@@ -29,7 +29,8 @@ Here we are importing basic libraries pandas, Numpy, seaborn etc..
 train_data=pd.read_csv('/content/train.csv')
 train_data.head(5)
 ```
-![train_head](https://imgur.com/gallery/hbNkgnJ)
+
+<img width="1363" alt="Screenshot 2022-05-09 at 7 33 38 PM" src="https://user-images.githubusercontent.com/49567327/167429165-68768b53-48b7-4171-a366-f4b1b4a8a63d.png">
 
 
 
